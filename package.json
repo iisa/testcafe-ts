@@ -1,6 +1,6 @@
 {
-  "name": "@internetarchive/your-webcomponent",
-  "description": "The Internet Archive Typescript WebComponent template. It is based on the @open-wc template.",
+  "name": "e2e sandbox testing",
+  "description": "TS supported testcafe testing",
   "license": "AGPL-3.0-only",
   "author": "Internet Archive",
   "version": "0.0.0",
@@ -14,13 +14,19 @@
     "format": "eslint --ext .ts,.html . --fix --ignore-path .gitignore && prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "circular": "madge --circular --extensions ts .",
     "test": "tsc && yarn run lint && yarn run circular && wtr --coverage",
-    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\""
+    "test:watch": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"wtr --watch\"",
+    "remove-old-dir": "rm -rf e2e",
+    "load-br-files": "copyfiles -u 4 \"./node_modules/@internetarchive/bookreader/tests/e2e/**\" \"./e2e/bookreader/\"",
+    "run-servers": "cd \"./node_modules/@internetarchive/bookreader\" && npm install && npm run serve --silent",
+    "postinstall": "npm run remove-old-dir && npm run load-br-files && concurrently -k -r  \"npm run run-servers \"  \"npx testcafe \""
   },
   "types": "dist/index.d.ts",
   "dependencies": {
+    "http-server": "^14.0.0",
     "lit": "^2.0.2"
   },
   "devDependencies": {
+    "@internetarchive/bookreader": "^5.0.0-35",
     "@open-wc/eslint-config": "^7.0.0",
     "@open-wc/testing": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
@@ -28,15 +34,18 @@
     "@web/dev-server": "^0.1.28",
     "@web/test-runner": "^0.13.22",
     "concurrently": "^6.3.0",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-lit-a11y": "^2.2.0",
     "eslint-plugin-wc": "^1.3.2",
     "husky": "^7.0.0",
+    "lit-html": "^2.0.2",
     "madge": "^5.0.1",
     "prettier": "^2.4.1",
     "sinon": "^12.0.1",
+    "testcafe": "^1.17.1",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4"
   },
